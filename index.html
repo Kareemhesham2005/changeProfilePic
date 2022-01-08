@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile Photo</title>
+    <style>
+      .content {
+        font-family: Arial, Helvetica, sans-serif;
+        padding: 20px;
+        height: 100vh;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .content img {
+        width: 445px;
+        height: 445px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+      .content h3 {
+        font-size: 20px;
+        letter-spacing: 1px;
+        margin-top: 30px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content"></div>
+    <form>
+      <div class="form">
+        <div>
+          <input
+            type="text"
+            name="fullName"
+            id="fullName"
+            placeholder="Your Full Name"
+            required
+          />
+        </div>
+        <div class="username">
+          <input type="text" name="user" placeholder="Your UserName" required />
+        </div>
+        <div class="passowrd">
+          <input type="password" required placeholder="Your Password" />
+        </div>
+        <div class="image">
+          <input type="file" id="image" onchange="savePhoto(this)" required />
+          <!-- <a id="link" download>link to your file (upload a file first)</a> -->
+        </div>
+        <div class="submit">
+          <input type="submit" value="Sign Up" />
+        </div>
+      </div>
+    </form>
+    <script>
+      let photo;
+      let objectURL;
+
+      function savePhoto(inp) {
+        let formData = new FormData();
+
+        const input = document.getElementById("image");
+        const link = document.getElementById("link");
+
+        if (objectURL) {
+          // revoke the old object url to avoid using more memory than needed
+          URL.revokeObjectURL(objectURL);
+        }
+
+        const file = inp.files[0];
+        objectURL = URL.createObjectURL(file);
+
+        // document.querySelector(
+        //   ".content"
+        // ).innerHTML = `<img src = "${objectURL}" style = "width: 445px;height:445px;object-fit:cover;" />`;
+
+        // link.download = file.name; // this name is used when the user downloads the file
+        // link.href = objectURL;
+      }
+
+      document.querySelector("form").addEventListener("submit", (e) => {
+        e.preventDefault();
+        document.querySelector("form").style.display = "none";
+        let name = document.querySelector("#fullName").value;
+        document.querySelector(".content").innerHTML = `
+            <div>
+                <img src = "${objectURL}" />
+            </div>
+            <h3>Welcome, ${name}</h3>
+        `;
+        document.querySelector(".content").style.display = "flex";
+      });
+    </script>
+  </body>
+</html>
